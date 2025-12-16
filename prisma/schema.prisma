@@ -1,0 +1,26 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client"
+  output   = "../lib/generated/prisma"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+// Define a model called User.
+model User {
+  id String @id @default(cuid()) @map("_id") //@id means that this field will be used as primary key and mapped to _id field in MongoDB database.
+  name String?
+  email String @unique //@unique means that this field will be unique across all records.
+  password String
+  image String?
+  createdAt DateTime @default(now()) //@default(now()) means that this field will be automatically set to the current date and time when the record is created.
+  updatedAt DateTime @updatedAt //@updatedAt means that this field will be automatically updated when the record is updated.
+}

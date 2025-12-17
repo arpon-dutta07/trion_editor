@@ -15,12 +15,48 @@ datasource db {
 }
 
 // Define a model called User.
+// Define an enum called UserRole. 
+//This enum can have three values: ADMIN, USER, and PREMIUM_USER.
+enum UserRole {
+  ADMIN
+  USER
+  PREMIUM_USER
+}
+
+
+// Define a model called User.
 model User {
   id String @id @default(cuid()) @map("_id") //@id means that this field will be used as primary key and mapped to _id field in MongoDB database.
   name String?
   email String @unique //@unique means that this field will be unique across all records.
   password String
   image String?
+
+  accounts Account[]
+  role     UserRole @default(USER)
   createdAt DateTime @default(now()) //@default(now()) means that this field will be automatically set to the current date and time when the record is created.
   updatedAt DateTime @updatedAt //@updatedAt means that this field will be automatically updated when the record is updated.
+}
+
+// Define a model called Account.
+model Account {
+  id                String  @id @default(cuid()) @map("_id")
+  userId            String  @map("user_id")
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @map("refresh_token") //@map means that this field will be mapped to refresh_token field in MongoDB database.
+  access_token      String? @map("access_token")
+  expires_at        Int?    @map("expires_token")
+  token_type        String? @map("token_type")
+  scope             String? 
+  id_token          String? @map("id_token")
+  session_state     String? @map("session_state")
+ 
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+ 
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+ 
+  @@unique([provider, providerAccountId])
 }

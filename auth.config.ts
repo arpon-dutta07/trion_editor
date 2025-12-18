@@ -1,20 +1,19 @@
-import Github from "next-auth/providers/github"
+import GitHub from "next-auth/providers/github"
 import Google from "next-auth/providers/google"
 import type { NextAuthConfig } from "next-auth"
 
 export default{
-    providers: [
-        Github({
-            clientId: process.env.GITHUB_ID,
-            clientSecret: process.env.GITHUB_SECRET,
+    providers:[
+        GitHub({
+            clientId:process.env.AUTH_GITHUB_ID,
+            clientSecret:process.env.AUTH_GITHUB_SECRET
         }),
         Google({
-            clientId: process.env.GOOGLE_ID,
-            clientSecret: process.env.GOOGLE_SECRET,
-        }),
-    ],
-} satisfies NextAuthConfig;
-
+            clientId:process.env.AUTH_GOOGLE_ID,
+            clientSecret:process.env.AUTH_GOOGLE_SECRET,
+        })
+    ]
+} satisfies NextAuthConfig
 
 
 // In the above code, we have defined the authentication configuration for NextAuth.

@@ -28,7 +28,6 @@ model User {
   id String @id @default(cuid()) @map("_id") //@id means that this field will be used as primary key and mapped to _id field in MongoDB database.
   name String?
   email String @unique //@unique means that this field will be unique across all records.
-  password String
   image String?
 
   accounts Account[]

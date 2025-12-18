@@ -41,8 +41,8 @@ export function Header() {
                       width={60}
                     />
 
-                    <span className="hidden sm:block font-extrabold text-lg">
-                      VibeCode Editor
+                    <span className="hidden sm:block font-mono font-extrabold text-lg bg-zinc-100 dark:bg-zinc-800 px-3 py-1 rounded-md">
+                    {'<TrionEditor />'}
                     </span>
                   </Link>
                   <span className="text-zinc-300 dark:text-zinc-700">|</span>

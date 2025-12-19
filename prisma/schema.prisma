@@ -12,8 +12,7 @@ datasource db {
   provider = "mongodb"
   url      = env("DATABASE_URL")
 }
-
-// Define a model called User.
+//enum  means enumeration, which is a special data type that enables a variable to be a set of predefined constants.
 // Define an enum called UserRole. 
 //This enum can have three values: ADMIN, USER, and PREMIUM_USER.
 enum UserRole {
@@ -44,7 +43,7 @@ model Account {
   type              String
   provider          String
   providerAccountId String
-  refreshToken      String? @map("refresh_token")
+  refreshToken      String? @map("refresh_token") //? means that this field is optional (can be null).querys are executed on the account table based on the value of the provider and providerAccountId fields.
   accessToken       String? @map("access_token")
   expiresAt         Int?    @map("expires_at")
   tokenType         String? @map("token_type")
@@ -56,4 +55,41 @@ model Account {
 
   @@unique([provider, providerAccountId])
   @@index([userId])
+}
+
+// Define an enum called Templates.
+enum Templates {
+  REACT
+  NEXTJS
+  EXPRESS
+  VUE
+  HONO
+  ANGULAR
+}
+
+// Define a model called Playground.
+model Playground {
+  id            String         @id @default(cuid()) @map("_id") //@id means that this field will be used as primary key and mapped to _id field in MongoDB database.
+  title         String
+  description   String?
+  template      Templates      @default(REACT)
+  templateFiles TemplateFile[]
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  Starmark      StarMark[]
+  userId        String
+  user          User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+// Define a model called StarMark.for marking playgrounds by users.
+model StarMark {
+  id           String     @id @default(cuid()) @map("_id")
+  userId       String
+  playgroundId String
+  isMarked     Boolean
+  createdAt    DateTime   @default(now())
+  user         User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  playground   Playground @relation(fields: [playgroundId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, playgroundId])
 }

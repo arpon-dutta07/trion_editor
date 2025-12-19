@@ -29,6 +29,11 @@ model User {
   email String @unique //@unique means that this field will be unique across all records.
   image String?
 
+  myplayground Playground[] //one-to-many relationship between User and Playground models.
+  //A user can have multiple playgrounds, but each playground belongs to only one user.
+  staredPlaygrounds StarMark[] //one-to-many relationship between User and StarMark models.
+  //A user can have multiple starred playgrounds, but each starred playground belongs to only one user.
+
   accounts Account[]
   role     UserRole @default(USER)
   createdAt DateTime @default(now()) //@default(now()) means that this field will be automatically set to the current date and time when the record is created.
@@ -38,7 +43,7 @@ model User {
 // Define a model called Account.
 
 model Account {
-  id                String  @id @default(cuid()) @map("_id")
+  id                String  @id @default(cuid()) @map("_id") // @id means that this field will be used as primary key and mapped to _id field in MongoDB database.  
   userId            String  @map("user_id")
   type              String
   provider          String
@@ -53,8 +58,8 @@ model Account {
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  @@unique([provider, providerAccountId])
-  @@index([userId])
+  @@unique([provider, providerAccountId]) //@@unique means that the combination of these two fields must be unique across all records.
+  @@index([userId]) //@@index means that an index will be created on this field to speed up queries.
 }
 
 // Define an enum called Templates.
@@ -73,12 +78,14 @@ model Playground {
   title         String
   description   String?
   template      Templates      @default(REACT)
-  templateFiles TemplateFile[]
   createdAt     DateTime       @default(now())
   updatedAt     DateTime       @updatedAt
   Starmark      StarMark[]
   userId        String
   user          User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  //fields: [userId], means that this field will use the userId field to establish the relationship.
+  //references: [id] means that this field will reference the id field in the User model.
+  //onDelete: Cascade means that if the referenced User is deleted, all related Playground records will also be deleted.
 }
 
 // Define a model called StarMark.for marking playgrounds by users.
@@ -89,7 +96,13 @@ model StarMark {
   isMarked     Boolean
   createdAt    DateTime   @default(now())
   user         User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  //fields: [userId], means that this field will use the userId field to establish the relationship.
+  //references: [id] means that this field will reference the id field in the User model.
+  //onDelete: Cascade means that if the referenced User is deleted, all related StarMark records will also be deleted.
   playground   Playground @relation(fields: [playgroundId], references: [id], onDelete: Cascade)
-
-  @@unique([userId, playgroundId])
+  //fields: [playgroundId], means that this field will use the playgroundId field to establish the relationship.
+  //references: [id] means that this field will reference the id field in the Playground model.
+  //onDelete: Cascade means that if the referenced Playground is deleted, all related StarMark records will also be deleted.
+  @@unique([userId, playgroundId])//@@unique means that the combination of these two fields must be unique across all records.
 }
+

@@ -1,6 +1,6 @@
 "use server"
 import { currentUser } from "@/features/auth/actions";
-import { db } from "@/lib/db"
+import { db} from "@/lib/db"
 import { TemplateFolder } from "../libs/path-to-json";
 import { revalidatePath } from "next/cache";
 
@@ -42,6 +42,7 @@ export const toggleStarMarked = async (playgroundId: string, isChecked: boolean)
   }
 };
 
+// Create a new playground
 export const createPlayground = async (data:{
     title: string;
     template: "REACT" | "NEXTJS" | "EXPRESS" | "VUE" | "HONO" | "ANGULAR";
@@ -49,7 +50,7 @@ export const createPlayground = async (data:{
   })=>{
     const {template , title , description} = data;
 
-    const user = await currentUser();
+    const user = await currentUser();// Get the current authenticated user from the session
     try {
         const playground = await db.playground.create({
             data:{
@@ -67,13 +68,14 @@ export const createPlayground = async (data:{
 }
 
 
+// Fetch all playgrounds for the current user
 export const getAllPlaygroundForUser = async ()=>{
     const user = await currentUser();
     try {
         const user  = await currentUser();
         const playground = await db.playground.findMany({
             where:{
-                userId:user?.id!
+                userId:user?.id
             },
             include:{
                 user:true,

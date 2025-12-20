@@ -4,6 +4,7 @@ import { auth } from "@/auth";
 import { SessionProvider } from "next-auth/react";
 import { ThemeProvider } from "@/components/providers/theme-providers";
 import { Poppins } from "next/font/google";
+import { Toaster } from "@/components/ui/sonner";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -36,7 +37,10 @@ export default async function RootLayout({
         enableSystem
         disableTransitionOnChange
         >
-        {children}
+            <div className="flex flex-col min-h-screen">
+              <Toaster/>
+              <div className="flex-1">{children}</div>
+            </div>
         </ThemeProvider>
       </body>
     </html>

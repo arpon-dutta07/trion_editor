@@ -10,6 +10,7 @@ import { toast } from "sonner";
 
 const AddNewButton = () => {
   const [isModalOpen, setIsModalOpen] = useState(false)
+  // State to hold the selected template data
   const [selectedTemplate, setSelectedTemplate] = useState<{
     title: string;
     template: "REACT" | "NEXTJS" | "EXPRESS" | "VUE" | "HONO" | "ANGULAR";

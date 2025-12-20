@@ -10,6 +10,7 @@ export default async function DashboardLayout({
 }) {
   const playgroundData = await getAllPlaygroundForUser()
 
+  //technologyIconMap means mapping technology templates to icon names
   // Store icon names (strings) instead of the components themselves
   const technologyIconMap: Record<string, string> = {
     REACT: "Zap",
@@ -20,14 +21,23 @@ export default async function DashboardLayout({
     ANGULAR: "Terminal",
   }
 
+  // Format the playground data to include icon names
   const formattedPlaygroundData =
     playgroundData?.map((item) => ({
       id: item.id,
       name: item.title,
       starred: item.Starmark?.[0]?.isMarked || false,
       // Pass the icon name as a string
+  // item.Starmark?. → if Starmark exists
+  // [0]? → safely access first element
+  // .isMarked → true / false
+  // || false → fallback if anything is missing
+  
       icon: technologyIconMap[item.template] || "Code2", // Default to "Code2" if template not found
     })) || []
+// })) || []
+// If playgroundData was null or undefined
+// The entire expression becomes []
 
   return (
     <SidebarProvider>

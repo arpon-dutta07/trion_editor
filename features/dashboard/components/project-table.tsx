@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { format } from "date-fns";
-import type { Project } from "../types";
+import type { Project } from "../type";
 import { Badge } from "@/components/ui/badge";
 import {
   Table,
@@ -55,6 +55,9 @@ import {
 import { toast } from "sonner";
 import { MarkedToggleButton } from "./toggle-star";
 
+
+// Props for the ProjectTable component
+// interface means structure of data being passed
 interface ProjectTableProps {
   projects: Project[];
   onUpdateProject?: (
@@ -205,7 +208,7 @@ export default function ProjectTable({
                 <TableCell>
                   <Badge
                     variant="outline"
-                    className="bg-[#E93F3F15] text-[#E93F3F] border-[#E93F3F]"
+                    className="bg-[#35a4fd15] text-[#35a4fd] border-[#35a4fd]"
                   >
                     {project.template}
                   </Badge>
@@ -283,7 +286,7 @@ export default function ProjectTable({
                       <DropdownMenuSeparator />
                       <DropdownMenuItem
                         onClick={() => handleDeleteClick(project)}
-                        className="text-destructive focus:text-destructive"
+                        className="text-[#6f56e5] focus:text-[#6f56e5]"
                       >
                         <Trash2 className="h-4 w-4 mr-2" />
                         Delete Project
@@ -371,7 +374,7 @@ export default function ProjectTable({
             <AlertDialogAction
               onClick={handleDeleteProject}
               disabled={isLoading}
-              className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+              className="bg-[#6f56e5] text-white hover:bg-[#35a4fd]"
             >
               {isLoading ? "Deleting..." : "Delete Project"}
             </AlertDialogAction>
